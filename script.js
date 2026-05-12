@@ -2205,17 +2205,22 @@ async function loadAd() {
                 adImg.src = ad.imageUrl;
                 document.getElementById('adSidebarLink').href = ad.link;
 
-                // הצגת העמודה
-                sidebar.style.display = 'block';
+                // הגדרות העמודה (Sidebar)
+                sidebar.style.display = 'flex';           // מאפשר יישור פנימי
+                sidebar.style.alignItems = 'center';      // מיישר לאמצע אנכית
+                sidebar.style.justifyContent = 'center';  // מיישר לאמצע אופקית
                 sidebar.style.position = 'sticky';
-                sidebar.style.top = '70px';
+                sidebar.style.top = '80px';               // רווח מהתפריט העליון
+                sidebar.style.height = 'fit-content';     // הקופסה נצמדת לגובה התמונה (מונע לבן מסביב)
+                sidebar.style.background = 'transparent'; // מבטל רקע לבן אם נשאר
 
-                // התיקון שאתה צריך: הגבלת גובה התמונה
-                adImg.style.width = '100%';        // רוחב מלא של העמודה
-                adImg.style.maxHeight = '350px';   // כאן אתה קובע כמה היא תהיה קטנה! תשנה ל-250 אם זה עדיין גדול
-                adImg.style.objectFit = 'contain'; // מכווץ את כל התמונה פנימה בלי לחתוך
-                adImg.style.borderRadius = '12px';
+                // הגדרות התמונה
+                adImg.style.width = '100%';               // תופסת את כל רוחב העמודה
+                adImg.style.maxWidth = '280px';           // מגביל רוחב כדי שלא תהיה ענקית
+                adImg.style.height = 'auto';              // גובה משתנה לפי הפרופורציה (מונע מתיחה/חיתוך)
                 adImg.style.display = 'block';
+                adImg.style.borderRadius = '12px';
+                adImg.style.margin = '0 auto';            // יישור סופי למרכז
             }
         }
     } catch (e) { console.error(e); }
