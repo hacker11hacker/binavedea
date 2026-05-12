@@ -64,29 +64,36 @@ async function triggerStats() {
 }
 setInterval(triggerStats, 10000); // מעדכן אוטומטית כל 10 שניות
 async function loadAd() {
-    // ננסה למצוא את האלמנט שבו הפרסומת צריכה להופיע
-    const adContainer = document.getElementById('adSidebarContainer') || document.querySelector('.ad-sidebar');
-    if (!adContainer) return;
-
+    // 1. ניסיון למשוך את הנתונים מהשרת
     try {
-        // משיכה ישירה של הקובץ מהשרת - בדיוק כמו הפיד!
-        const res = await fetch(BACKEND + "/ads.json?v=" + Date.now());
+        const res = await fetch("https://shlomoe11.pythonanywhere.com/ads.json");
         if (!res.ok) return;
-        
         const data = await res.json();
-        const ad = data[AD_KEY];
+        
+        // 2. שליפת נתוני הפרסומת (לפי המפתח שמופיע ב-JSON שלך)
+        const ad = data["shaagat_ad"]; 
+        if (!ad || !ad.active) return;
 
-        if (ad && ad.active) {
-            adContainer.innerHTML = `
-                <a href="${ad.link}" target="_blank" style="display:block;">
-                    <img src="${ad.imageUrl}" style="width:100%; border-radius:12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                </a>
-            `;
+        // 3. איתור האלמנטים ב-HTML (לפי ה-IDs ששלחת לי בטקסט)
+        const sidebar = document.getElementById('adOnlySidebar');
+        const adImg = document.getElementById('adSidebarImg');
+        const adLink = document.getElementById('adSidebarLink');
+
+        if (sidebar && adImg && adLink) {
+            // עדכון התמונה והקישור
+            adImg.src = ad.imageUrl;
+            adLink.href = ad.link;
+            
+            // הצגת העמודה (ב-HTML היא על display: none)
+            sidebar.style.display = 'block';
         }
     } catch (e) {
-        console.error("שגיאה בטעינת פרסומת:", e);
+        console.error("Ad load failed:", e);
     }
 }
+
+// אל תשכח לקרוא לפונקציה כשהדף נטען
+window.addEventListener('DOMContentLoaded', loadAd);
 let pollPending = false, oldestTs = 0, allLoaded = false, loadingMore = false;
 
 let composeProfile = 'news', composeImgUrl = '', composeVidUrl = '', composeBtns = [], composeHtmlCode = '';
