@@ -2221,7 +2221,7 @@ async function loadAd() {
                 // הגדרות התמונה - מגבלת גובה ברורה!
                 adImg.setAttribute('style', `
                     width: 100% !important;
-                    max-height: 80vh !important; /* מגבלת גובה של 80% מהמסך */
+                    max-height: 85vh !important; /* מגבלת גובה של 80% מהמסך */
                     object-fit: contain !important;
                     display: block !important;
                     border-radius: 12px !important;
