@@ -2191,46 +2191,38 @@ document.addEventListener("DOMContentLoaded", () => {
     animate();
 });
 
-// פונקציית המארב - רצה כל חצי שנייה ובודקת אם הפרסומת נעלמה
-const adInterval = setInterval(async function() {
-    const existingAd = document.getElementById('permanentAd');
-    if (existingAd) return; // אם היא כבר שם, אל תעשה כלום
-
+// השחזור של הגרסה שעבדה
+async function loadAd() {
     try {
         const res = await fetch("https://shlomoe11.pythonanywhere.com/ads.json?v=" + Date.now());
         const data = await res.json();
         const ad = data["shaagat_ad"];
 
         if (ad && ad.active) {
-            // יוצרים אלמנט חדש עם ID שאף סקריפט אחר לא מכיר
-            const adDiv = document.createElement('div');
-            adDiv.id = 'permanentAd';
-            
-            adDiv.innerHTML = `
-                <a href="${ad.link}" target="_blank" style="display:block; width:100%;">
-                    <img src="${ad.imageUrl}" style="width:100%; display:block; border-radius:10px; object-fit:contain;">
-                </a>
-            `;
+            const sidebar = document.getElementById('adOnlySidebar');
+            const adImg = document.getElementById('adSidebarImg');
+            const adLink = document.getElementById('adSidebarLink');
 
-            // הזרקה לסוף ה-Body כדי שלא יחתך בתוך הדיבים של האפליקציה
-            document.body.appendChild(adDiv);
+            if (sidebar && adImg) {
+                adImg.src = ad.imageUrl;
+                if (adLink) adLink.href = ad.link;
 
-            // עיצוב מובנה צדדי שמתעלם מהמבנה של האתר
-            adDiv.setAttribute('style', `
-                display: block !important;
-                position: fixed !important;
-                top: 70px !important;
-                left: 15px !important;
-                width: 260px !important;
-                z-index: 2000 !important;
-                background: white !important;
-                padding: 8px !important;
-                border-radius: 12px !important;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
-                border: 1px solid #eee !important;
-            `);
-            
-            console.log("Ad anchored to body.");
+                // הגדרות תצוגה פשוטות כמו שהיה
+                sidebar.style.display = 'block';
+                sidebar.style.position = 'sticky';
+                sidebar.style.top = '75px'; // מונע עליה על הפרופיל
+                
+                // תיקון החיתוך - התמונה תתכווץ לגובה שתחליט (למשל 500px)
+                adImg.style.width = '100%';
+                adImg.style.maxHeight = '500px'; 
+                adImg.style.objectFit = 'contain'; 
+                adImg.style.borderRadius = '12px';
+            }
         }
-    } catch (e) {}
-}, 3000); // בודק כל 2 שניות - אם זה נעלם, זה יחזיר את זה מיד
+    } catch (e) {
+        console.error("Ad load error:", e);
+    }
+}
+
+// קריאה אחת פשוטה וזהו
+setTimeout(loadAd, 1500);
