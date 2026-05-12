@@ -2216,7 +2216,7 @@ async function loadAd() {
 
                 // הגדרות התמונה
                 adImg.style.width = '100%';               // תופסת את כל רוחב העמודה
-                adImg.style.maxWidth = '280px';           // מגביל רוחב כדי שלא תהיה ענקית
+                adImg.style.maxWidth = 'none';           // מגביל רוחב כדי שלא תהיה ענקית
                 adImg.style.height = 'auto';              // גובה משתנה לפי הפרופורציה (מונע מתיחה/חיתוך)
                 adImg.style.display = 'block';
                 adImg.style.borderRadius = '12px';
