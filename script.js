@@ -63,6 +63,29 @@ async function triggerStats() {
     }
 }
 setInterval(triggerStats, 10000); // מעדכן אוטומטית כל 10 שניות
+async function loadAd() {
+    const adContainer = document.getElementById('adSidebarContainer'); // וודא שזה ה-ID ב-HTML
+    if (!adContainer) return;
+
+    try {
+        // פנייה ישירה לקובץ ads.json בשרת הפייתון (כמו הפיד)
+        const res = await fetch(BACKEND + "/ads.json?v=" + Date.now());
+        if (!res.ok) return;
+        
+        const data = await res.json();
+        const ad = data[AD_KEY];
+
+        if (ad && ad.active) {
+            adContainer.innerHTML = `
+                <a href="${ad.link}" target="_blank" style="display:block; text-decoration:none;">
+                    <img src="${ad.imageUrl}" style="width:100%; border-radius:12px; display:block; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                </a>
+            `;
+        }
+    } catch (e) {
+        console.error("Ad load failed:", e);
+    }
+}
 let pollPending = false, oldestTs = 0, allLoaded = false, loadingMore = false;
 
 let composeProfile = 'news', composeImgUrl = '', composeVidUrl = '', composeBtns = [], composeHtmlCode = '';
