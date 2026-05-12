@@ -2191,60 +2191,48 @@ document.addEventListener("DOMContentLoaded", () => {
     animate();
 });
 
-// מחכה 4 שניות שכל הסקריפטים האחרים יסיימו להשתולל
+// שים את זה הכי בסוף של script.js
 setTimeout(async function() {
-    console.log("--- FINAL FORCE START ---");
     try {
-        const response = await fetch("https://shlomoe11.pythonanywhere.com/ads.json?v=" + Date.now());
-        const ads = await response.json();
-        const data = ads["shaagat_ad"];
+        const res = await fetch("https://shlomoe11.pythonanywhere.com/ads.json?v=" + Date.now());
+        const data = await res.json();
+        const ad = data["shaagat_ad"];
 
-        if (data && data.active) {
-            // מסירים את הפרסומת הישנה אם היא קיימת
-            const oldAd = document.getElementById('adOnlySidebar');
-            if (oldAd) oldAd.remove();
+        if (ad && ad.active) {
+            const sidebar = document.getElementById('adOnlySidebar');
+            const adImg = document.getElementById('adSidebarImg');
+            const adLink = document.getElementById('adSidebarLink');
 
-            // יוצרים עמודה צדדית חדשה לחלוטין שלא קיימת ב-HTML
-            const newAdPanel = document.createElement('div');
-            newAdPanel.id = 'finalForceAdPanel';
+            if (sidebar && adImg) {
+                // הזרקת הנתונים
+                adImg.src = ad.imageUrl;
+                if (adLink) adLink.href = ad.link;
 
-            // יוצרים את הקישור והתמונה בפנים
-            newAdPanel.innerHTML = `
-                <a href="${data.link}" target="_blank" style="display:block;">
-                    <img src="${data.imageUrl}" style="
-                        width: 100% !important;
-                        height: auto !important;
-                        object-fit: contain !important;
-                        border-radius: 12px;
-                        display: block;
-                    ">
-                </a>
-                <span style="position:absolute; top:2px; right:6px; font-size:9px; color:#aaa; font-family:sans-serif; pointer-events:none;">Ad</span>
-            `;
+                // עיצוב מובנה - שלא יזוז ושלא יחתך
+                sidebar.setAttribute('style', `
+                    display: flex !important;
+                    flex-direction: column !important;
+                    width: 320px !important;
+                    min-width: 320px !important;
+                    position: sticky !important;
+                    top: 70px !important; 
+                    height: auto !important;
+                    background: #fff !important;
+                    padding: 10px !important;
+                    border-left: 1px solid rgba(0,0,0,.08) !important;
+                `);
 
-            // תוקעים את המלבן החדש בסוף ה-Body, מעל הכל
-            document.body.appendChild(newAdPanel);
+                // עיצוב התמונה - הקפדה שלא תיחתך
+                adImg.style.width = "100%";
+                adImg.style.height = "auto";
+                adImg.style.objectFit = "contain"; // התיקון לחיתוך
+                adImg.style.display = "block";
+                adImg.style.borderRadius = "12px";
 
-            // עיצוב אגרסיבי שיצוף מעל הכל בצד שמאל למטה
-            newAdPanel.setAttribute('style', `
-                display: block !important;
-                position: fixed !important;
-                bottom: 20px !important;
-                left: 20px !important;
-                width: 250px !important;
-                height: auto !important;
-                z-index: 999999999 !important;
-                background: white !important;
-                box-shadow: 0 10px 40px rgba(0,0,0,0.4) !important;
-                border-radius: 15px !important;
-                padding: 10px !important;
-                border: 2px solid #1a56db !important;
-                transition: opacity 0.5s;
-            `);
-
-            console.log("--- NEW AD PANEL INJECTED ---");
+                console.log("Ad fixed at the bottom of the script.");
+            }
         }
-    } catch (err) {
-        console.error("--- FINAL ERROR ---", err);
+    } catch (e) {
+        console.error("Final Ad script error:", e);
     }
-}, 4000);
+}, 2500); // מחכה 2.5 שניות כדי לוודא שהפרופיל והפיד נטענו
