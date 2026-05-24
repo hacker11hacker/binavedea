@@ -1,6 +1,6 @@
 window._cardData = {};
 const BACKEND = "https://shlomoe11.pythonanywhere.com";
-const GOOGLE_CLIENT_ID = '166751855372-qr7libu2bogc4e3n20tnvmc34tlij8op.apps.googleusercontent.com';
+const GOOGLE_CLIENT_ID = '1087997271039-b8l9oi9mcut6vkp9trdmobgm78fgolme.apps.googleusercontent.com';
 const LOGO = 'https://i.ibb.co/KjBNwmPt/image.png';
 const ADMIN_EMAIL = 'shlomoheimm@gmail.com';
 const SUPER_ADMINS = ['hip@hamakom.ovh', '0548537646a@gmail.com', 'shlomoheimm@gmail.com'];
