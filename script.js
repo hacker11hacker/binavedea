@@ -106,7 +106,7 @@ async function loadAd() {
             const lastShown = localStorage.getItem('last_ad_shown');
             const now = Date.now();
             
-            if (!lastShown || (now - parseInt(lastShown) > AD_INTERVAL)) {
+            if (true) {
                 const overlay = document.createElement('div');
                 overlay.setAttribute('style', `
                     position: fixed !important; top: 0 !important; left: 0 !important;
