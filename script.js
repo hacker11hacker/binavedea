@@ -2111,7 +2111,6 @@ window.closeSiteStats = function() {
     // run after login
     window._applySidebarButtons = applySidebarVisibility;
 })();
-}, 1000);
 // ====== תיקון צ'אט מנהלים (דורס את הפונקציות הישנות) ======
 
 // משיכת הודעות
